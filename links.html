@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>vibe · Campaign links</title>
+<meta name="theme-color" content="#0B0A10">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Urbanist:wght@200;300;400&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+<style>
+  .tool { padding-block: 40px 96px; }
+  .tool .wrap { max-width: 760px; display: grid; gap: 22px; }
+  .tool p.note { color: var(--muted); }
+  .grid { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .f { display: grid; gap: 6px; min-width: 0; }
+  .f label { font-size: .88rem; color: var(--muted); }
+  .f small { color: var(--dim); font-size: .78rem; }
+  .f input, .f select {
+    -webkit-appearance: none; appearance: none; min-height: 48px; padding: 0 16px;
+    border-radius: 14px; border: 1px solid var(--line); background: var(--ink-3); color: var(--text);
+    font: 400 1rem/1 var(--f-body); width: 100%;
+  }
+  .f input:focus, .f select:focus { outline: none; border-color: var(--lav); }
+  .out { display: grid; gap: 10px; padding: 20px; border-radius: 18px; background: var(--ink-2); border: 1px solid rgba(184,166,255,.3); }
+  .out code { font: 400 .86rem/1.5 var(--f-mono); color: var(--lav-hi); word-break: break-all; }
+  .out-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .rules { display: grid; gap: 8px; padding-left: 20px; margin: 0; color: var(--muted); }
+  .rules code { font: 400 .86rem var(--f-mono); color: var(--text); }
+  .check { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .92rem; }
+  .check input { width: 18px; height: 18px; accent-color: var(--lav); }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="./"><span class="logo-dot" aria-hidden="true"></span>vibe</a>
+    <span class="eyebrow" style="margin:0">Team only</span>
+  </div>
+</header>
+<main class="tool">
+  <div class="wrap">
+    <h1 class="display-2">Campaign links</h1>
+    <p class="note">Make one link per post, ad or message batch. Every sign-up from that link is labeled with these values in the Google Sheet, so you can compare channels and creatives later.</p>
+
+    <div class="grid">
+      <div class="f">
+        <label for="src">Channel (utm_source)</label>
+        <select id="src">
+          <option>instagram</option><option>tiktok</option><option>reddit</option><option>xiaohongshu</option>
+          <option>facebook</option><option>linkedin</option><option>x</option><option>email</option>
+          <option>dm</option><option>flyer</option><option>other</option>
+        </select>
+      </div>
+      <div class="f">
+        <label for="med">Type (utm_medium)</label>
+        <select id="med">
+          <option>organic</option><option>paid</option><option>influencer</option><option>dm</option><option>offline</option>
+        </select>
+      </div>
+      <div class="f">
+        <label for="camp">Campaign (utm_campaign)</label>
+        <input id="camp" value="nyc_launch_oct">
+        <small>Same value across a whole push, e.g. nyc_launch_oct.</small>
+      </div>
+      <div class="f">
+        <label for="cont">Creative (utm_content)</label>
+        <input id="cont" placeholder="e.g. reel_orb_v1">
+        <small>One value per post or ad version. Use the same code in your tracking notes.</small>
+      </div>
+      <div class="f">
+        <label for="ver">Headline</label>
+        <select id="ver">
+          <option value="">Random (A/B test)</option>
+        </select>
+        <small>Fix a headline only if the ad's text matches it.</small>
+      </div>
+      <div class="f" style="align-content:end">
+        <label class="check"><input type="checkbox" id="test"> Test link (excluded from the Summary)</label>
+      </div>
+    </div>
+
+    <div class="out" aria-live="polite">
+      <code id="url"></code>
+      <div class="out-actions">
+        <button class="btn btn-sm" type="button" id="copy">Copy link</button>
+        <a class="btn-ghost" id="open" href="./" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">Open</a>
+      </div>
+    </div>
+
+    <h2 class="display-3" style="margin-top:12px">Naming rules</h2>
+    <ul class="rules">
+      <li>Lowercase, no spaces. Use <code>_</code> between words. The page lowercases and strips anything else.</li>
+      <li>Never put a name or other identifying detail in a link value.</li>
+      <li>Write each link and its date in your tracking notes so you can match numbers to posts later.</li>
+      <li>For your own visits, open the page once with <code>?internal=1</code>. That browser is then excluded from the Summary. <code>?internal=0</code> turns it off.</li>
+    </ul>
+  </div>
+</main>
+<script>
+(function () {
+  var C = window.VIBE_CONFIG || {};
+  var H = C.HEADLINES || {};
+  var ver = document.getElementById('ver');
+  (C.ACTIVE_VARIANTS || Object.keys(H)).forEach(function (k) {
+    if (!H[k]) return;
+    var o = document.createElement('option');
+    o.value = k; o.textContent = k.toUpperCase() + ': ' + H[k];
+    ver.appendChild(o);
+  });
+  function clean(v) { return (v || '').trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_.\-]/g, '').slice(0, 80); }
+  var base = (C.SITE_URL || (location.origin + location.pathname.replace(/[^\/]*$/, ''))).replace(/[?#].*$/, '');
+  var ids = ['src', 'med', 'camp', 'cont', 'ver', 'test'];
+  var urlEl = document.getElementById('url'), openEl = document.getElementById('open');
+  function build() {
+    var p = new URLSearchParams();
+    p.set('utm_source', clean(document.getElementById('src').value));
+    p.set('utm_medium', clean(document.getElementById('med').value));
+    var camp = clean(document.getElementById('camp').value); if (camp) p.set('utm_campaign', camp);
+    var cont = clean(document.getElementById('cont').value); if (cont) p.set('utm_content', cont);
+    var v = document.getElementById('ver').value; if (v) p.set('v', v);
+    if (document.getElementById('test').checked) p.set('test', '1');
+    var url = base + '?' + p.toString();
+    urlEl.textContent = url; openEl.href = url;
+  }
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', build); el.addEventListener('change', build);
+  });
+  build();
+  var copy = document.getElementById('copy');
+  copy.addEventListener('click', function () {
+    var t = urlEl.textContent;
+    function done() { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy link'; }, 1600); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () {});
+  });
+})();
+</script>
+</body>
+</html>

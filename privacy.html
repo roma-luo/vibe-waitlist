@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>vibe · Privacy</title>
+<meta name="theme-color" content="#0B0A10">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Urbanist:wght@200;300;400&display=swap">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+<style>
+  .legal { padding-block: 48px 96px; }
+  .legal .wrap { max-width: 720px; display: grid; gap: 18px; }
+  .legal h2 { font: 300 1.5rem/1.2 var(--f-display); margin: 18px 0 0; }
+  .legal p, .legal li { color: var(--muted); }
+  .legal ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="logo" href="./"><span class="logo-dot" aria-hidden="true"></span>vibe</a>
+    <a class="btn btn-sm" href="./#join">Join the waitlist</a>
+  </div>
+</header>
+<main class="legal">
+  <div class="wrap">
+    <p class="eyebrow">Privacy policy · Updated October 2026</p>
+    <h1 class="display-2">What happens to your information</h1>
+    <p>vibe is not live yet. This page covers the waitlist only.</p>
+
+    <h2>What we collect</h2>
+    <ul>
+      <li>Your email address.</li>
+      <li>Your answers to the optional questions (your city and what you want most from vibe), if you give them.</li>
+      <li>How you found us: the ad or link you came from, the headline you saw, the page that sent you, and whether you used a phone or a computer.</li>
+      <li>Anonymous page activity, such as whether you scrolled or tapped a button, tied to a random ID stored in your browser.</li>
+    </ul>
+
+    <h2>Why we collect it</h2>
+    <ul>
+      <li>To email you when vibe launches.</li>
+      <li>To understand which messages and channels bring people to vibe, so we can decide where to launch and what to build.</li>
+    </ul>
+
+    <h2>What we don't do</h2>
+    <p>We don't sell your information, and we don't share it with anyone except the services that store it and send our emails.</p>
+
+    <h2>Your choices</h2>
+    <p>Every email we send has an unsubscribe link. To have your email removed from the waitlist entirely, reply to any vibe email and ask<span data-contact></span>.</p>
+  </div>
+</main>
+<script>
+  (function () {
+    var c = (window.VIBE_CONFIG || {}).CONTACT_EMAIL;
+    var el = document.querySelector('[data-contact]');
+    if (c && el) el.textContent = ', or write to ' + c;
+  })();
+</script>
+</body>
+</html>
