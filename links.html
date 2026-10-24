@@ -19,12 +19,12 @@
   .f { display: grid; gap: 6px; min-width: 0; }
   .f label { font-size: .88rem; color: var(--muted); }
   .f small { color: var(--dim); font-size: .78rem; }
-  .f input, .f select {
+  .f input:not([type=checkbox]), .f select {
     -webkit-appearance: none; appearance: none; min-height: 48px; padding: 0 16px;
     border-radius: 14px; border: 1px solid var(--line); background: var(--ink-3); color: var(--text);
     font: 400 1rem/1 var(--f-body); width: 100%;
   }
-  .f input:focus, .f select:focus { outline: none; border-color: var(--lav); }
+  .f input:not([type=checkbox]):focus, .f select:focus { outline: none; border-color: var(--lav); }
   .out { display: grid; gap: 10px; padding: 20px; border-radius: 18px; background: var(--ink-2); border: 1px solid rgba(184,166,255,.3); }
   .out code { font: 400 .86rem/1.5 var(--f-mono); color: var(--lav-hi); word-break: break-all; }
   .out-actions { display: flex; flex-wrap: wrap; gap: 10px; }
