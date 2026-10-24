@@ -131,6 +131,10 @@
   var todayCn = (now.getMonth() + 1) + '月' + now.getDate() + '日';
   var base = (C.SITE_URL || (location.origin + location.pathname.replace(/[^\/]*$/, ''))).replace(/[?#].*$/, '');
 
+  // ?me=m2 in a member's personal bookmark preselects their code
+  var me = clean(new URLSearchParams(location.search).get('me') || '');
+  var known = (C.MEMBERS || ['m1', 'm2', 'm3', 'm4', 'team']);
+  if (known.indexOf(me) > -1) ls('vibe_links_member', me);
   var state = { m: ls('vibe_links_member') || '', src: '', med: '', label: '' };
 
   // Step 1: member buttons
