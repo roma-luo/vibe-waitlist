@@ -1,166 +1,207 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>vibe · Campaign links</title>
+<title>vibe · 我的推广链接</title>
 <meta name="theme-color" content="#0B0A10">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Urbanist:wght@200;300;400&display=swap">
-<link rel="stylesheet" href="styles.css?v=4">
-<script src="config.js?v=4"></script>
+<link rel="stylesheet" href="styles.css?v=5">
+<script src="config.js?v=5"></script>
 <style>
-  .tool { padding-block: 40px 96px; }
-  .tool .wrap { max-width: 760px; display: grid; gap: 22px; }
-  .tool p.note { color: var(--muted); }
-  .grid { display: grid; gap: 16px; }
-  @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
-  .f { display: grid; gap: 6px; min-width: 0; }
+  .tool { padding-block: 32px 96px; }
+  .tool .wrap { max-width: 680px; display: grid; gap: 28px; }
+  .lead { color: var(--muted); font-size: 1.05rem; }
+  .st { display: grid; gap: 12px; }
+  .step-title { display: flex; align-items: center; gap: 12px; font-size: 1.15rem; font-weight: 600; }
+  .num { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--lav); color: #15102A; font: 600 .9rem/1 var(--f-mono); flex: none; }
+  .st.off { opacity: .4; pointer-events: none; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pick {
+    -webkit-appearance: none; appearance: none;
+    min-height: 52px; padding: 0 22px; border-radius: 16px;
+    border: 1.5px solid var(--line); background: var(--ink-3); color: var(--text);
+    font: 500 1.02rem/1 var(--f-body); cursor: pointer;
+  }
+  .pick:hover { border-color: rgba(184,166,255,.5); }
+  .pick[aria-pressed=true] { background: var(--lav); border-color: var(--lav); color: #15102A; font-weight: 600; }
+  .pick small { display: block; font-size: .72rem; font-weight: 400; opacity: .75; margin-top: 3px; }
+  .result { display: grid; gap: 14px; padding: 22px; border-radius: 20px; background: var(--ink-2); border: 1.5px solid rgba(184,166,255,.45); }
+  .result code { font: 400 .86rem/1.55 var(--f-mono); color: var(--lav-hi); word-break: break-all; }
+  .summary { color: var(--muted); font-size: .95rem; }
+  .summary b { color: var(--text); font-weight: 600; }
+  .result .btn { justify-self: start; min-height: 56px; padding: 0 34px; font-size: 1.05rem; }
+  .todo { display: grid; gap: 8px; padding: 18px 20px; border-radius: 16px; background: rgba(184,166,255,.08); color: var(--muted); font-size: .95rem; }
+  .todo b { color: var(--text); }
+  details.adv { border-radius: 16px; background: var(--ink-2); border: 1px solid var(--line); }
+  details.adv summary { font-size: .95rem; color: var(--muted); }
+  .adv-body { display: grid; gap: 16px; padding: 0 22px 22px; }
+  .f { display: grid; gap: 6px; }
   .f label { font-size: .88rem; color: var(--muted); }
   .f small { color: var(--dim); font-size: .78rem; }
   .f input:not([type=checkbox]), .f select {
-    -webkit-appearance: none; appearance: none; min-height: 48px; padding: 0 16px;
-    border-radius: 14px; border: 1px solid var(--line); background: var(--ink-3); color: var(--text);
-    font: 400 1rem/1 var(--f-body); width: 100%;
+    -webkit-appearance: none; appearance: none; min-height: 46px; padding: 0 14px;
+    border-radius: 12px; border: 1px solid var(--line); background: var(--ink-3); color: var(--text);
+    font: 400 .95rem/1 var(--f-body); width: 100%;
   }
-  .f input:not([type=checkbox]):focus, .f select:focus { outline: none; border-color: var(--lav); }
-  .out { display: grid; gap: 10px; padding: 20px; border-radius: 18px; background: var(--ink-2); border: 1px solid rgba(184,166,255,.3); }
-  .out code { font: 400 .86rem/1.5 var(--f-mono); color: var(--lav-hi); word-break: break-all; }
-  .out-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-  .rules { display: grid; gap: 8px; padding-left: 20px; margin: 0; color: var(--muted); }
-  .rules code { font: 400 .86rem var(--f-mono); color: var(--text); }
   .check { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .92rem; }
   .check input { width: 18px; height: 18px; accent-color: var(--lav); }
-  @media (min-width: 640px) { .member { grid-column: 1 / -1; } }
-  .member select { border-color: rgba(184,166,255,.45); }
-  .out.blocked code { color: var(--warn); }
-  .out.blocked .btn { opacity: .5; pointer-events: none; }
 </style>
 </head>
 <body>
 <header class="nav">
   <div class="wrap nav-in">
     <a class="logo" href="./"><span class="logo-dot" aria-hidden="true"></span>vibe</a>
-    <span class="eyebrow" style="margin:0">Team only</span>
+    <span class="eyebrow" style="margin:0">组内使用</span>
   </div>
 </header>
 <main class="tool">
   <div class="wrap">
-    <h1 class="display-2">Campaign links</h1>
-    <p class="note">Make one link per post, ad or message batch. Every sign-up from that link is labeled with these values in the Google Sheet, so you can compare channels and creatives later.</p>
-
-    <div class="grid">
-      <div class="f member">
-        <label for="mem">Who is posting this? (team member code)</label>
-        <select id="mem">
-          <option value="">Choose your code</option>
-        </select>
-        <small>Every visit and sign-up from this link is credited to this code. Use "team" for posts you made together.</small>
-      </div>
-      <div class="f">
-        <label for="src">Channel (utm_source)</label>
-        <select id="src">
-          <option>instagram</option><option>tiktok</option><option>reddit</option><option>xiaohongshu</option>
-          <option>facebook</option><option>linkedin</option><option>x</option><option>email</option>
-          <option>dm</option><option>flyer</option><option>other</option>
-        </select>
-      </div>
-      <div class="f">
-        <label for="med">Type (utm_medium)</label>
-        <select id="med">
-          <option>organic</option><option>paid</option><option>influencer</option><option>dm</option><option>offline</option>
-        </select>
-      </div>
-      <div class="f">
-        <label for="camp">Campaign (utm_campaign)</label>
-        <input id="camp" value="nyc_launch_oct">
-        <small>Same value across a whole push, e.g. nyc_launch_oct.</small>
-      </div>
-      <div class="f">
-        <label for="cont">Creative (utm_content)</label>
-        <input id="cont" placeholder="e.g. reel_orb_v1">
-        <small>One value per post or ad version. Use the same code in your tracking notes.</small>
-      </div>
-      <div class="f">
-        <label for="ver">Headline</label>
-        <select id="ver">
-          <option value="">Random (A/B test)</option>
-        </select>
-        <small>Fix a headline only if the ad's text matches it.</small>
-      </div>
-      <div class="f" style="align-content:end">
-        <label class="check"><input type="checkbox" id="test"> Test link (excluded from the Summary)</label>
-      </div>
+    <div>
+      <h1 class="display-2">我的推广链接</h1>
+      <p class="lead" style="margin-top:12px">每次发帖或发私信前，来这里点三下，复制链接，贴进帖子里。谁带来了多少访客和报名，表格会自动统计。</p>
     </div>
 
-    <div class="out" aria-live="polite">
-      <code id="url"></code>
-      <div class="out-actions">
-        <button class="btn btn-sm" type="button" id="copy">Copy link</button>
-        <a class="btn-ghost" id="open" href="./" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">Open</a>
-      </div>
-    </div>
+    <section class="st" id="s1">
+      <p class="step-title"><span class="num">1</span>你是谁？</p>
+      <div class="chips" id="who"></div>
+      <small class="fine">代号由组内约定。网页会记住你的选择，下次不用再选。</small>
+    </section>
 
-    <h2 class="display-3" style="margin-top:12px">Naming rules</h2>
-    <ul class="rules">
-      <li>Lowercase, no spaces. Use <code>_</code> between words. The page lowercases and strips anything else.</li>
-      <li>Never put a name or other identifying detail in a link value.</li>
-      <li>Write each link and its date in your tracking notes so you can match numbers to posts later.</li>
-      <li>For your own visits, open the page once with <code>?internal=1</code>. That browser is then excluded from the Summary. <code>?internal=0</code> turns it off.</li>
-    </ul>
+    <section class="st off" id="s2">
+      <p class="step-title"><span class="num">2</span>发在哪里？</p>
+      <div class="chips" id="where">
+        <button class="pick" type="button" data-src="instagram" data-med="organic">Instagram</button>
+        <button class="pick" type="button" data-src="tiktok" data-med="organic">TikTok</button>
+        <button class="pick" type="button" data-src="xiaohongshu" data-med="organic">小红书</button>
+        <button class="pick" type="button" data-src="reddit" data-med="organic">Reddit</button>
+        <button class="pick" type="button" data-src="dm" data-med="dm">私信 / 群聊</button>
+        <button class="pick" type="button" data-src="instagram" data-med="paid">Instagram 广告<small>花了钱的</small></button>
+        <button class="pick" type="button" data-src="other" data-med="organic">其他</button>
+      </div>
+    </section>
+
+    <section class="st off" id="s3">
+      <p class="step-title"><span class="num">3</span>复制，贴进你的帖子</p>
+      <div class="result">
+        <p class="summary" id="sum"></p>
+        <code id="url"></code>
+        <button class="btn" type="button" id="copy">复制链接</button>
+      </div>
+      <div class="todo">
+        <span><b>发完之后，</b>在你自己的笔记里记一行：日期 + 平台 + 发了什么（比如"10/24 Instagram 发了按住圆球的短视频"）。4a 要用。</span>
+        <span><b>同一天在同一个平台发第二条？</b>展开下面的"更多设置"，给这条起个名字，就能和第一条分开统计。</span>
+      </div>
+    </section>
+
+    <details class="adv">
+      <summary>更多设置（一般不用动）</summary>
+      <div class="adv-body">
+        <div class="f">
+          <label for="cont">这条帖子的名字（utm_content）</label>
+          <input id="cont" placeholder="留空 = 自动用日期，例如 oct24">
+          <small>只在同一天同一平台发了多条时才需要填，例如 reel2、story1。只能用英文字母、数字和下划线。</small>
+        </div>
+        <div class="f">
+          <label for="camp">这一轮推广（utm_campaign）</label>
+          <input id="camp" value="nyc_launch_oct">
+        </div>
+        <div class="f">
+          <label for="ver">主标题</label>
+          <select id="ver"><option value="">随机（A/B 测试，推荐）</option></select>
+          <small>只有当广告文案和某个标题一模一样时才固定。</small>
+        </div>
+        <label class="check"><input type="checkbox" id="test"> 测试链接（自己试用，不计入统计）</label>
+      </div>
+    </details>
+
+    <p class="fine">自己访问网站时，先用 <code>?internal=1</code> 打开一次（<a href="./?internal=1">点这里</a>），这台设备之后的访问就不会算进数据。手机和电脑要各点一次。</p>
   </div>
 </main>
 <script>
 (function () {
   var C = window.VIBE_CONFIG || {};
-  var H = C.HEADLINES || {};
-  var ver = document.getElementById('ver');
+  function clean(v) { return (v || '').trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_.\-]/g, '').slice(0, 80); }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  var MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+  var now = new Date();
+  var today = MONTHS[now.getMonth()] + now.getDate();
+  var todayCn = (now.getMonth() + 1) + '月' + now.getDate() + '日';
+  var base = (C.SITE_URL || (location.origin + location.pathname.replace(/[^\/]*$/, ''))).replace(/[?#].*$/, '');
+
+  var state = { m: ls('vibe_links_member') || '', src: '', med: '', label: '' };
+
+  // Step 1: member buttons
+  var who = document.getElementById('who');
+  (C.MEMBERS || ['m1', 'm2', 'm3', 'm4', 'team']).forEach(function (k) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pick'; b.dataset.m = k;
+    b.textContent = k === 'team' ? 'team（一起发的）' : k;
+    who.appendChild(b);
+  });
+  who.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-m]'); if (!b) return;
+    state.m = b.dataset.m; ls('vibe_links_member', state.m); render();
+  });
+
+  // Step 2: platform buttons
+  var where = document.getElementById('where');
+  where.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-src]'); if (!b) return;
+    state.src = b.dataset.src; state.med = b.dataset.med;
+    state.label = b.childNodes[0].textContent.trim();
+    render();
+  });
+
+  var H = C.HEADLINES || {}, ver = document.getElementById('ver');
   (C.ACTIVE_VARIANTS || Object.keys(H)).forEach(function (k) {
     if (!H[k]) return;
-    var o = document.createElement('option');
-    o.value = k; o.textContent = k.toUpperCase() + ': ' + H[k];
-    ver.appendChild(o);
+    var o = document.createElement('option'); o.value = k; o.textContent = k.toUpperCase() + '：' + H[k]; ver.appendChild(o);
   });
-  function clean(v) { return (v || '').trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_.\-]/g, '').slice(0, 80); }
-  var base = (C.SITE_URL || (location.origin + location.pathname.replace(/[^\/]*$/, ''))).replace(/[?#].*$/, '');
-  var mem = document.getElementById('mem');
-  (C.MEMBERS || ['m1', 'm2', 'm3', 'm4', 'team']).forEach(function (k) {
-    var o = document.createElement('option');
-    o.value = k; o.textContent = k;
-    mem.appendChild(o);
-  });
-  try { var savedMem = localStorage.getItem('vibe_links_member'); if (savedMem) mem.value = savedMem; } catch (e) {}
-  var ids = ['mem', 'src', 'med', 'camp', 'cont', 'ver', 'test'];
-  var urlEl = document.getElementById('url'), openEl = document.getElementById('open');
-  var outEl = document.querySelector('.out');
-  function build() {
-    var p = new URLSearchParams();
-    var m = clean(mem.value);
-    try { localStorage.setItem('vibe_links_member', m); } catch (e) {}
-    outEl.classList.toggle('blocked', !m);
-    if (!m) { urlEl.textContent = 'Choose your team member code first.'; openEl.removeAttribute('href'); return; }
-    p.set('m', m);
-    p.set('utm_source', clean(document.getElementById('src').value));
-    p.set('utm_medium', clean(document.getElementById('med').value));
-    var camp = clean(document.getElementById('camp').value); if (camp) p.set('utm_campaign', camp);
-    var cont = clean(document.getElementById('cont').value); if (cont) p.set('utm_content', cont);
-    var v = document.getElementById('ver').value; if (v) p.set('v', v);
-    if (document.getElementById('test').checked) p.set('test', '1');
-    var url = base + '?' + p.toString();
-    urlEl.textContent = url; openEl.href = url;
-  }
-  ids.forEach(function (id) {
+  ['cont', 'camp', 'ver', 'test'].forEach(function (id) {
     var el = document.getElementById(id);
-    el.addEventListener('input', build); el.addEventListener('change', build);
+    el.addEventListener('input', render); el.addEventListener('change', render);
   });
-  build();
+
+  var urlEl = document.getElementById('url'), sumEl = document.getElementById('sum');
+  function render() {
+    who.querySelectorAll('[data-m]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.m === state.m)); });
+    where.querySelectorAll('[data-src]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.src === state.src && b.dataset.med === state.med));
+    });
+    document.getElementById('s2').classList.toggle('off', !state.m);
+    var ready = !!(state.m && state.src);
+    document.getElementById('s3').classList.toggle('off', !ready);
+    if (!ready) { urlEl.textContent = ''; sumEl.textContent = '先完成上面两步'; return; }
+
+    var content = clean(document.getElementById('cont').value);
+    var p = new URLSearchParams();
+    p.set('m', state.m);
+    p.set('utm_source', state.src);
+    p.set('utm_medium', state.med);
+    p.set('utm_campaign', clean(document.getElementById('camp').value) || 'nyc_launch_oct');
+    p.set('utm_content', content ? today + '_' + content : today);
+    var v = ver.value; if (v) p.set('v', v);
+    var test = document.getElementById('test').checked;
+    if (test) p.set('test', '1');
+    urlEl.textContent = base + '?' + p.toString();
+    sumEl.innerHTML = '这条链接带来的访客和报名会记为：<b>' + state.m + '</b> · <b>' + state.label + '</b> · <b>' + todayCn +
+      (content ? '（' + content + '）' : '') + '</b>' + (test ? ' · <b>测试，不计入统计</b>' : '');
+  }
+  render();
+
   var copy = document.getElementById('copy');
   copy.addEventListener('click', function () {
-    if (!clean(mem.value)) return;
-    var t = urlEl.textContent;
-    function done() { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy link'; }, 1600); }
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () {});
+    var t = urlEl.textContent; if (!t) return;
+    function done() { copy.textContent = '已复制 ✓'; setTimeout(function () { copy.textContent = '复制链接'; }, 1800); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(urlEl);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand('copy'); done(); } catch (e) {}
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, fallback); else fallback();
   });
 })();
 </script>
