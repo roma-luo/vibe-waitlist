@@ -1,7 +1,7 @@
 /* vibe waitlist settings. This is the only file you need to edit. */
 window.VIBE_CONFIG = {
   // Google Apps Script web app URL (ends in /exec). Paste it here after deploying backend/Code.gs.
-  ENDPOINT: "",
+  ENDPOINT: "https://script.google.com/macros/s/AKfycbzE1sra2q0jPRPXpR5q9sNC_v5fdoqRHe19MPgzy4rDQRB-_QIFNLHn4dNeKGI1vELYXA/exec",
 
   // Public address of this page, used to build referral links. Leave blank to use the current address.
   SITE_URL: "https://roma-luo.github.io/vibe-waitlist/",
