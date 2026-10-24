@@ -4,7 +4,7 @@ window.VIBE_CONFIG = {
   ENDPOINT: "",
 
   // Public address of this page, used to build referral links. Leave blank to use the current address.
-  SITE_URL: "",
+  SITE_URL: "https://roma-luo.github.io/vibe-waitlist/",
 
   // Headline A/B test. Each visitor is randomly given one of ACTIVE_VARIANTS and keeps it.
   // Force one with ?v=a in the link (useful when an ad's creative matches a headline).
