@@ -135,8 +135,10 @@
     }
     if (readable) {
       // text/plain body keeps this a "simple" request, so no CORS preflight
-      return fetch(ENDPOINT, { method: 'POST', body: body, credentials: 'omit', redirect: 'follow' })
-        .then(function (r) { return r.json(); });
+      var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+      var timer = ctl ? setTimeout(function () { ctl.abort(); }, 12000) : 0;
+      return fetch(ENDPOINT, { method: 'POST', body: body, credentials: 'omit', redirect: 'follow', signal: ctl ? ctl.signal : undefined })
+        .then(function (r) { clearTimeout(timer); return r.json(); }, function (e) { clearTimeout(timer); throw e; });
     }
     return fetch(ENDPOINT, { method: 'POST', body: body, mode: 'no-cors', credentials: 'omit', keepalive: true })
       .catch(function () {});
@@ -259,9 +261,23 @@
       btn.disabled = true;
       btn.textContent = 'Joining…';
 
-      post(o, true)
+      var retried = false;
+      function attempt() {
+        return post(o, true).catch(function (err) {
+          if (err && err.message === 'no_endpoint') throw err;
+          if (retried) throw err;
+          // First reply unreadable (Apps Script sometimes answers with an error page): try once more.
+          retried = true;
+          if (window.console) console.warn('[vibe] sign-up reply unreadable, retrying:', err);
+          return new Promise(function (r) { setTimeout(r, 700); }).then(function () { return post(o, true); });
+        });
+      }
+
+      attempt()
         .then(function (res) {
           if (res && res.status === 'ok') return success(email, res.ref_code, form);
+          // After a retry, "duplicate" means the first attempt was saved.
+          if (res && res.status === 'duplicate' && retried) return success(email, '', form);
           if (res && res.status === 'duplicate') {
             LS.set('vibe_joined', email);
             joinedEmail = email;
@@ -287,7 +303,10 @@
           // Network-level failure: the reply may be unreadable even though the row was saved.
           // Send once more without reading the reply; the server ignores duplicates.
           if (window.console) console.warn('[vibe] sign-up reply unreadable, retrying blind:', err);
-          return fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(o), mode: 'no-cors', credentials: 'omit' })
+          // Don't keep the visitor waiting: a send that hasn't failed within 4 s counts as delivered.
+          var blind = fetch(ENDPOINT, { method: 'POST', body: JSON.stringify(o), mode: 'no-cors', credentials: 'omit', keepalive: true });
+          var grace = new Promise(function (r) { setTimeout(r, 4000); });
+          return Promise.race([blind, grace])
             .then(function () { success(email, '', form); })
             .catch(function () {
               setMsg(form, "We couldn't save that. Check your connection and try again.", true);
