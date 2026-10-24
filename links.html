@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<title>vibe · 我的推广链接</title>
+<title>vibe · My share links</title>
 <meta name="theme-color" content="#0B0A10">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Urbanist:wght@200;300;400&display=swap">
@@ -35,6 +35,7 @@
   .result .btn { justify-self: start; min-height: 56px; padding: 0 34px; font-size: 1.05rem; }
   .todo { display: grid; gap: 8px; padding: 18px 20px; border-radius: 16px; background: rgba(184,166,255,.08); color: var(--muted); font-size: .95rem; }
   .todo b { color: var(--text); }
+  .warn-note { margin-top: 14px; padding: 12px 16px; border-radius: 12px; background: rgba(255,180,168,.1); border: 1px solid rgba(255,180,168,.35); color: var(--text); font-size: .95rem; }
   details.adv { border-radius: 16px; background: var(--ink-2); border: 1px solid var(--line); }
   details.adv summary { font-size: .95rem; color: var(--muted); }
   .adv-body { display: grid; gap: 16px; padding: 0 22px 22px; }
@@ -54,70 +55,72 @@
 <header class="nav">
   <div class="wrap nav-in">
     <a class="logo" href="./"><span class="logo-dot" aria-hidden="true"></span>vibe</a>
-    <span class="eyebrow" style="margin:0">组内使用</span>
+    <span class="eyebrow" style="margin:0">Team only</span>
   </div>
 </header>
 <main class="tool">
   <div class="wrap">
     <div>
-      <h1 class="display-2">我的推广链接</h1>
-      <p class="lead" style="margin-top:12px">每次发帖或发私信前，来这里点三下，复制链接，贴进帖子里。谁带来了多少访客和报名，表格会自动统计。</p>
+      <h1 class="display-2">My share links</h1>
+      <p class="lead" style="margin-top:12px">Before each post or batch of messages, come here, tap twice, and copy your link. The sheet counts the visitors and sign-ups each of us brings in.</p>
+      <p class="warn-note"><b>This page is just for you.</b> Don't send this page to friends. Send them the link it makes in step 3.</p>
     </div>
 
     <section class="st" id="s1">
-      <p class="step-title"><span class="num">1</span>你是谁？</p>
+      <p class="step-title"><span class="num">1</span>Who are you?</p>
       <div class="chips" id="who"></div>
-      <small class="fine">代号由组内约定。网页会记住你的选择，下次不用再选。</small>
+      <small class="fine">Use the code your team gave you. This page remembers it next time.</small>
     </section>
 
     <section class="st off" id="s2">
-      <p class="step-title"><span class="num">2</span>发在哪里？</p>
+      <p class="step-title"><span class="num">2</span>Where are you posting?</p>
       <div class="chips" id="where">
         <button class="pick" type="button" data-src="instagram" data-med="organic">Instagram</button>
         <button class="pick" type="button" data-src="tiktok" data-med="organic">TikTok</button>
-        <button class="pick" type="button" data-src="xiaohongshu" data-med="organic">小红书</button>
+        <button class="pick" type="button" data-src="xiaohongshu" data-med="organic">Xiaohongshu</button>
         <button class="pick" type="button" data-src="reddit" data-med="organic">Reddit</button>
-        <button class="pick" type="button" data-src="dm" data-med="dm">私信 / 群聊</button>
-        <button class="pick" type="button" data-src="instagram" data-med="paid">Instagram 广告<small>花了钱的</small></button>
-        <button class="pick" type="button" data-src="other" data-med="organic">其他</button>
+        <button class="pick" type="button" data-src="dm" data-med="dm">DMs / group chats</button>
+        <button class="pick" type="button" data-src="instagram" data-med="paid">Instagram ad<small>paid</small></button>
+        <button class="pick" type="button" data-src="other" data-med="organic">Other</button>
       </div>
     </section>
 
     <section class="st off" id="s3">
-      <p class="step-title"><span class="num">3</span>复制，贴进你的帖子</p>
+      <p class="step-title"><span class="num">3</span>Copy it and share it</p>
       <div class="result">
         <p class="summary" id="sum"></p>
         <code id="url"></code>
-        <button class="btn" type="button" id="copy">复制链接</button>
+        <button class="btn" type="button" id="copy">Copy link</button>
       </div>
       <div class="todo">
-        <span><b>发完之后，</b>在你自己的笔记里记一行：日期 + 平台 + 发了什么（比如"10/24 Instagram 发了按住圆球的短视频"）。4a 要用。</span>
-        <span><b>同一天在同一个平台发第二条？</b>展开下面的"更多设置"，给这条起个名字，就能和第一条分开统计。</span>
+        <span><b>After you post,</b> add one line to your own notes: date + platform + what you posted (e.g. "10/24 Instagram Story: orb video + link sticker"). You'll need it for 4a.</span>
+        <span><b>Second post on the same platform the same day?</b> Open "More settings" below and give it a name, so the two are counted separately.</span>
+        <span><b>Instagram tip:</b> links in post captions aren't clickable. Put the link in a Story link sticker, your bio, or DMs.</span>
       </div>
     </section>
 
     <details class="adv">
-      <summary>更多设置（一般不用动）</summary>
+      <summary>More settings (usually not needed)</summary>
       <div class="adv-body">
         <div class="f">
-          <label for="cont">这条帖子的名字（utm_content）</label>
-          <input id="cont" placeholder="留空 = 自动用日期，例如 oct24">
-          <small>只在同一天同一平台发了多条时才需要填，例如 reel2、story1。只能用英文字母、数字和下划线。</small>
+          <label for="cont">Name for this post (utm_content)</label>
+          <input id="cont" placeholder="Leave blank to use today's date, e.g. oct24">
+          <small>Only needed for several posts on one platform in one day, e.g. reel2 or story1. Letters, numbers and underscores only.</small>
         </div>
         <div class="f">
-          <label for="camp">这一轮推广（utm_campaign）</label>
+          <label for="camp">Campaign (utm_campaign)</label>
           <input id="camp" value="nyc_launch_oct">
         </div>
         <div class="f">
-          <label for="ver">主标题</label>
-          <select id="ver"><option value="">随机（A/B 测试，推荐）</option></select>
-          <small>只有当广告文案和某个标题一模一样时才固定。</small>
+          <label for="ver">Headline</label>
+          <select id="ver"><option value="">Random (A/B test, recommended)</option></select>
+          <small>Fix one only if your ad text matches that headline exactly.</small>
         </div>
-        <label class="check"><input type="checkbox" id="test"> 测试链接（自己试用，不计入统计）</label>
+        <label class="check"><input type="checkbox" id="test"> Test link (for trying it yourself; not counted)</label>
       </div>
     </details>
 
-    <p class="fine">自己访问网站时，先用 <code>?internal=1</code> 打开一次（<a href="./?internal=1">点这里</a>），这台设备之后的访问就不会算进数据。手机和电脑要各点一次。</p>
+    <p class="fine">Before you visit the site yourself, open <a href="./?internal=1">this link</a> once on your phone and once on your computer. After that, your own visits from those devices aren't counted.</p>
   </div>
 </main>
 <script>
@@ -128,7 +131,7 @@
   var MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   var now = new Date();
   var today = MONTHS[now.getMonth()] + now.getDate();
-  var todayCn = (now.getMonth() + 1) + '月' + now.getDate() + '日';
+  var todayLabel = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   var base = (C.SITE_URL || (location.origin + location.pathname.replace(/[^\/]*$/, ''))).replace(/[?#].*$/, '');
 
   // ?me=m2 in a member's personal bookmark preselects their code
@@ -142,7 +145,7 @@
   (C.MEMBERS || ['m1', 'm2', 'm3', 'm4', 'team']).forEach(function (k) {
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'pick'; b.dataset.m = k;
-    b.textContent = k === 'team' ? 'team（一起发的）' : k;
+    b.textContent = k === 'team' ? 'team (posted together)' : k;
     who.appendChild(b);
   });
   who.addEventListener('click', function (e) {
@@ -162,7 +165,7 @@
   var H = C.HEADLINES || {}, ver = document.getElementById('ver');
   (C.ACTIVE_VARIANTS || Object.keys(H)).forEach(function (k) {
     if (!H[k]) return;
-    var o = document.createElement('option'); o.value = k; o.textContent = k.toUpperCase() + '：' + H[k]; ver.appendChild(o);
+    var o = document.createElement('option'); o.value = k; o.textContent = k.toUpperCase() + ': ' + H[k]; ver.appendChild(o);
   });
   ['cont', 'camp', 'ver', 'test'].forEach(function (id) {
     var el = document.getElementById(id);
@@ -178,7 +181,7 @@
     document.getElementById('s2').classList.toggle('off', !state.m);
     var ready = !!(state.m && state.src);
     document.getElementById('s3').classList.toggle('off', !ready);
-    if (!ready) { urlEl.textContent = ''; sumEl.textContent = '先完成上面两步'; return; }
+    if (!ready) { urlEl.textContent = ''; sumEl.textContent = 'Finish the two steps above first.'; return; }
 
     var content = clean(document.getElementById('cont').value);
     var p = new URLSearchParams();
@@ -191,15 +194,15 @@
     var test = document.getElementById('test').checked;
     if (test) p.set('test', '1');
     urlEl.textContent = base + '?' + p.toString();
-    sumEl.innerHTML = '这条链接带来的访客和报名会记为：<b>' + state.m + '</b> · <b>' + state.label + '</b> · <b>' + todayCn +
-      (content ? '（' + content + '）' : '') + '</b>' + (test ? ' · <b>测试，不计入统计</b>' : '');
+    sumEl.innerHTML = 'Visitors and sign-ups from this link count as: <b>' + state.m + '</b> · <b>' + state.label + '</b> · <b>' + todayLabel +
+      (content ? ' (' + content + ')' : '') + '</b>' + (test ? ' · <b>test, not counted</b>' : '');
   }
   render();
 
   var copy = document.getElementById('copy');
   copy.addEventListener('click', function () {
     var t = urlEl.textContent; if (!t) return;
-    function done() { copy.textContent = '已复制 ✓'; setTimeout(function () { copy.textContent = '复制链接'; }, 1800); }
+    function done() { copy.textContent = 'Copied ✓'; setTimeout(function () { copy.textContent = 'Copy link'; }, 1800); }
     function fallback() {
       var r = document.createRange(); r.selectNodeContents(urlEl);
       var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
