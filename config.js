@@ -16,6 +16,9 @@ window.VIBE_CONFIG = {
   // Two variants split small traffic less thinly than three. Add "c" if you have the visitors.
   ACTIVE_VARIANTS: ["a", "b"],
 
+  // Team member codes for links.html. Neutral codes only, never names (4a screenshots must be anonymous).
+  MEMBERS: ["m1", "m2", "m3", "m4", "team"],
+
   // Show "Join N people on the list" only once the real count reaches this number.
   COUNT_THRESHOLD: 100,
 

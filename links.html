@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#0B0A10">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Urbanist:wght@200;300;400&display=swap">
-<link rel="stylesheet" href="styles.css?v=3">
-<script src="config.js?v=3"></script>
+<link rel="stylesheet" href="styles.css?v=4">
+<script src="config.js?v=4"></script>
 <style>
   .tool { padding-block: 40px 96px; }
   .tool .wrap { max-width: 760px; display: grid; gap: 22px; }
@@ -32,6 +32,10 @@
   .rules code { font: 400 .86rem var(--f-mono); color: var(--text); }
   .check { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .92rem; }
   .check input { width: 18px; height: 18px; accent-color: var(--lav); }
+  @media (min-width: 640px) { .member { grid-column: 1 / -1; } }
+  .member select { border-color: rgba(184,166,255,.45); }
+  .out.blocked code { color: var(--warn); }
+  .out.blocked .btn { opacity: .5; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -47,6 +51,13 @@
     <p class="note">Make one link per post, ad or message batch. Every sign-up from that link is labeled with these values in the Google Sheet, so you can compare channels and creatives later.</p>
 
     <div class="grid">
+      <div class="f member">
+        <label for="mem">Who is posting this? (team member code)</label>
+        <select id="mem">
+          <option value="">Choose your code</option>
+        </select>
+        <small>Every visit and sign-up from this link is credited to this code. Use "team" for posts you made together.</small>
+      </div>
       <div class="f">
         <label for="src">Channel (utm_source)</label>
         <select id="src">
@@ -113,10 +124,23 @@
   });
   function clean(v) { return (v || '').trim().toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_.\-]/g, '').slice(0, 80); }
   var base = (C.SITE_URL || (location.origin + location.pathname.replace(/[^\/]*$/, ''))).replace(/[?#].*$/, '');
-  var ids = ['src', 'med', 'camp', 'cont', 'ver', 'test'];
+  var mem = document.getElementById('mem');
+  (C.MEMBERS || ['m1', 'm2', 'm3', 'm4', 'team']).forEach(function (k) {
+    var o = document.createElement('option');
+    o.value = k; o.textContent = k;
+    mem.appendChild(o);
+  });
+  try { var savedMem = localStorage.getItem('vibe_links_member'); if (savedMem) mem.value = savedMem; } catch (e) {}
+  var ids = ['mem', 'src', 'med', 'camp', 'cont', 'ver', 'test'];
   var urlEl = document.getElementById('url'), openEl = document.getElementById('open');
+  var outEl = document.querySelector('.out');
   function build() {
     var p = new URLSearchParams();
+    var m = clean(mem.value);
+    try { localStorage.setItem('vibe_links_member', m); } catch (e) {}
+    outEl.classList.toggle('blocked', !m);
+    if (!m) { urlEl.textContent = 'Choose your team member code first.'; openEl.removeAttribute('href'); return; }
+    p.set('m', m);
     p.set('utm_source', clean(document.getElementById('src').value));
     p.set('utm_medium', clean(document.getElementById('med').value));
     var camp = clean(document.getElementById('camp').value); if (camp) p.set('utm_campaign', camp);
@@ -133,6 +157,7 @@
   build();
   var copy = document.getElementById('copy');
   copy.addEventListener('click', function () {
+    if (!clean(mem.value)) return;
     var t = urlEl.textContent;
     function done() { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = 'Copy link'; }, 1600); }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () {});

@@ -38,11 +38,14 @@
     return (v || '').toString().trim().toLowerCase()
       .replace(/\s+/g, '_').replace(/[^a-z0-9_.\-]/g, '').slice(0, 80);
   }
-  var hasUtm = UTM.some(function (k) { return clean(params.get(k)); });
+  // m = team member code (m1, m2…) of whoever posted the link. Travels with the campaign.
+  var memberParam = clean(params.get('m')).slice(0, 20);
+  var hasUtm = UTM.some(function (k) { return clean(params.get(k)); }) || !!memberParam;
   var attr = null;
   if (hasUtm) {
     attr = {};
     UTM.forEach(function (k) { attr[k] = clean(params.get(k)) || '(none)'; });
+    attr.owner = memberParam || '(none)';
     attr.landing_url = location.href.slice(0, 500);
     LS.set('vibe_attr', JSON.stringify(attr));   // remember the last campaign that brought this visitor
   } else {
@@ -53,6 +56,7 @@
     UTM.forEach(function (k) { attr[k] = '(none)'; });
     attr.landing_url = location.href.slice(0, 500);
   }
+  if (!attr.owner) attr.owner = '(none)';
 
   var ua = navigator.userAgent || '';
   var inApp = /Instagram/i.test(ua) ? 'instagram'
@@ -120,6 +124,7 @@
       referrer: referrer.slice(0, 300),
       page_url: location.href.slice(0, 500),
       landing_url: attr.landing_url,
+      owner: attr.owner,
       referred_by: LS.get('vibe_ref') || '',
       is_test: isTest ? 'test' : '',
       client_time: new Date().toISOString()
@@ -336,7 +341,8 @@
   }
   function shareUrl() {
     var root = (C.SITE_URL || (location.origin + location.pathname)).replace(/[?#].*$/, '');
-    var q = 'utm_source=referral&utm_medium=word_of_mouth&utm_campaign=referral';
+    var q = 'utm_source=referral&utm_medium=word_of_mouth&utm_campaign=referral' +
+      (attr.owner && attr.owner !== '(none)' ? '&m=' + encodeURIComponent(attr.owner) : '');
     return root + '?' + (refCode ? 'ref=' + encodeURIComponent(refCode) + '&' : '') + q;
   }
   function showShare(thanks) {
