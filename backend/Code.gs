@@ -315,14 +315,14 @@ function buildSummary() {
     for (var i = 0; i < nk; i++) {
       var L = colL_(c0 + i);
       keyRanges.push(L + KEY_ROW + ':' + L);
-      params.push('k' + (i + 1));
+      params.push('key_' + 'abc'.charAt(i));   // not 'k1': Sheets reads that as cell K1
     }
-    var evMatch = keys.map(function (k, i) { return 'Events!$' + k.ev + '$2:$' + k.ev + ',k' + (i + 1); }).join(',');
-    var sgMatch = keys.map(function (k, i) { return 'Signups!$' + k.sg + '$2:$' + k.sg + ',k' + (i + 1); }).join(',');
+    var evMatch = keys.map(function (k, i) { return 'Events!$' + k.ev + '$2:$' + k.ev + ',' + params[i]; }).join(',');
+    var sgMatch = keys.map(function (k, i) { return 'Signups!$' + k.sg + '$2:$' + k.sg + ',' + params[i]; }).join(',');
     var spMatch = keys.every(function (k) { return k.sp; })
-      ? keys.map(function (k, i) { return 'Spend!$' + k.sp + '$2:$' + k.sp + ',k' + (i + 1); }).join(',') : '';
+      ? keys.map(function (k, i) { return 'Spend!$' + k.sp + '$2:$' + k.sp + ',' + params[i]; }).join(',') : '';
     function lam(expr) {
-      return '=MAP(' + keyRanges.join(',') + ',LAMBDA(' + params.join(',') + ',IF(k1="","",' + expr + ')))';
+      return '=MAP(' + keyRanges.join(',') + ',LAMBDA(' + params.join(',') + ',IF(' + params[0] + '="","",' + expr + ')))';
     }
     var src = keys.map(function (k) { return 'Events!$' + k.ev + '$2:$' + k.ev; });
     var keyF = nk === 1
@@ -337,6 +337,8 @@ function buildSummary() {
     sh.getRange(KEY_ROW - 2, c0).setValue(title).setFontWeight('bold').setFontSize(12);
     sh.getRange(KEY_ROW - 1, c0, 1, headers.length).setValues([headers]).setFontWeight('bold').setBackground('#ece8f7');
     sh.getRange(KEY_ROW, c0).setFormula(keyF);
+    // Sheets turns post names like "Oct28" into dates; show them as Oct28 again
+    keys.forEach(function (k, i) { if (k.label === 'Creative') sh.getRange(colL_(c0 + i) + KEY_ROW + ':' + colL_(c0 + i)).setNumberFormat('mmmd'); });
     metrics.forEach(function (m) {
       var cell = sh.getRange(where[m] + KEY_ROW), rng = function (x) { return where[x] + KEY_ROW + ':' + where[x]; };
       if (m === 'vis') cell.setFormula(lam(uv('page_view', evMatch, mf)));
